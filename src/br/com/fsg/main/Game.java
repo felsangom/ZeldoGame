@@ -30,7 +30,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	private BufferedImage image;
 
-	public Spritesheet spritesheet;
+	public static Spritesheet spritesheet;
 	public List<Entidade> entidades;
 	private Jogador jogador;
 	
@@ -96,7 +96,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		// Renderização do jogo
+		// Renderizaï¿½ï¿½o do jogo
 		for (Entidade entidade : entidades) {
 			entidade.render(g);
 		}

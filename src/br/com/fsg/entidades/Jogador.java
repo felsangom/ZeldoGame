@@ -10,8 +10,6 @@ public class Jogador extends Entidade {
 	public boolean left, up, right, down;
 	public int speed = 2;
 
-	private int width = 32;
-	private int height = 32;
 	private BufferedImage[] playerRight;
 	private BufferedImage[] playerLeft;
 	private BufferedImage[] playerUp;

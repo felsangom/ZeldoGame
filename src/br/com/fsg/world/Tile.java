@@ -7,8 +7,8 @@ import java.util.Random;
 import br.com.fsg.main.Game;
 
 public class Tile {
-	private static int WIDTH = 32;
-	private static int HEIGHT = 32;
+	public static int WIDTH = 32;
+	public static int HEIGHT = 32;
 
 	private int x, y;
 	private BufferedImage sprite;

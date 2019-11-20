@@ -6,6 +6,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import br.com.fsg.entidades.Ammo;
+import br.com.fsg.entidades.Enemy;
+import br.com.fsg.entidades.Entity;
+import br.com.fsg.entidades.Potion;
+import br.com.fsg.entidades.Weapon;
+import br.com.fsg.main.Game;
+
 public class World {
 
 	private Tile[] tiles;
@@ -26,6 +33,7 @@ public class World {
 				if (indice > 0 && indice % maxX == 0)
 					y ++; 
 
+				tiles[indice] = new FloorTile(x, y, Tile.floor());
 				int pixel = pixels[indice];
 				
 				switch (pixel) {
@@ -35,31 +43,31 @@ public class World {
 						break;
 					// Pixel preto = grama
 					case 0xFF000000:
-						tiles[indice] = new WallTile(x, y, Tile.floor());
+						tiles[indice] = new FloorTile(x, y, Tile.floor());
 						break;
-					// Pixel vermelho
+					// Pixel vermelho = inimigo
 					case 0xFFFF0000:
-						tiles[indice] = new WallTile(x, y, Tile.floor());
+						Game.entities.add(new Enemy(x, y, Entity.ENEMY_SPRITE));
 						break;
-					// Pixel ciano
+					// Pixel ciano = munição
 					case 0xFF00E0FF:
-						tiles[indice] = new WallTile(x, y, Tile.floor());
+						Game.entities.add(new Ammo(x, y, Entity.AMMO_SPRITE));
 						break;
 					// Pixel verde = Player
 					case 0xFF17FF00:
-						tiles[indice] = new WallTile(x, y, Tile.floor());
+						Game.player.setPosition(x * Tile.WIDTH, y * Tile.HEIGHT);
 						break;
-					// Pixel rosa
+					// Pixel rosa = vida
 					case 0xFFE800FF:
-						tiles[indice] = new WallTile(x, y, Tile.floor());
+						Game.entities.add(new Potion(x, y, Entity.POTION_SPRITE));
 						break;
-					// Pixel amarelo
+					// Pixel amarelo = arma
 					case 0xFFFFF700:
-						tiles[indice] = new WallTile(x, y, Tile.floor());
+						Game.entities.add(new Weapon(x, y, Entity.WEAPON_SPRITE));
 						break;
 					// Chão
 					default:
-						tiles[indice] = new WallTile(x, y, Tile.floor());
+						tiles[indice] = new FloorTile(x, y, Tile.floor());
 						break;
 				}
 			}

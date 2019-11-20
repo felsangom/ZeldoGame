@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import br.com.fsg.entidades.Entity;
 import br.com.fsg.entidades.Player;
 import br.com.fsg.graficos.Spritesheet;
+import br.com.fsg.world.Tile;
 import br.com.fsg.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener {
@@ -25,15 +26,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = false;
-	private final int WIDTH = 320;
-	private final int HEIGHT = 240;
-	private final int SCALE = 3;
+	private final int WINDOW_WIDTH = 1024;
+	private final int WINDOW_HEIGHT = 768;
+	private final int SCALE = 1;
 
 	private BufferedImage image;
 
 	public static Spritesheet spritesheet;
-	public List<Entity> entidades;
-	private Player jogador;
+	public static List<Entity> entities;
+	public static Player player;
 
 	public static World world;
 	
@@ -44,17 +45,17 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	public Game() {
 		addKeyListener(this);
-		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+		this.setPreferredSize(new Dimension(WINDOW_WIDTH * SCALE, WINDOW_HEIGHT * SCALE));
 		initFrame();
 
 		// Inicializa dos objetos
-		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		entidades = new ArrayList<Entity>();
+		image = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
-		world = new World("/map.png");
+		player = new Player(0, 0, spritesheet.getSprite(0, 8 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT));
+		entities.add(player);
 
-		jogador = new Player(0, 0, 32, 32, spritesheet.getSprite(0, 8 * 32, 32, 32));
-		entidades.add(jogador);
+		world = new World("/map.png");
 	}
 	
 	public void initFrame() {
@@ -84,7 +85,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	}
 
 	public void tick() {
-		for (Entity entidade : entidades) {
+		for (Entity entidade : entities) {
 			entidade.tick();
 		}
 	}
@@ -98,18 +99,18 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 		Graphics g = image.getGraphics();
 		g.setColor(new Color(0, 0, 0));
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		world.render(g);
 		
 		// Renderização do jogo
-		for (Entity entidade : entidades) {
+		for (Entity entidade : entities) {
 			entidade.render(g);
 		}
 		
 		g.dispose();
 		g = bs.getDrawGraphics();
-		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+		g.drawImage(image, 0, 0, WINDOW_WIDTH * SCALE, WINDOW_HEIGHT * SCALE, null);
 		bs.show();
 	}
 	
@@ -149,61 +150,61 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			jogador.right = true;
+			player.right = true;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			jogador.left = true;
+			player.left = true;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			jogador.up = true;
+			player.up = true;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {;
-			jogador.down = true;
+			player.down = true;
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			jogador.right = false;
+			player.right = false;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			jogador.left = false;
+			player.left = false;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			jogador.up = false;
+			player.up = false;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {;
-			jogador.down = false;
+			player.down = false;
 		}
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			jogador.right = true;
-			jogador.left = false;
+			player.right = true;
+			player.left = false;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			jogador.right = false;
-			jogador.left = true;
+			player.right = false;
+			player.left = true;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			jogador.up = true;
-			jogador.down = false;
+			player.up = true;
+			player.down = false;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			jogador.up = false;
-			jogador.down = true;
+			player.up = false;
+			player.down = true;
 		}
 	}
 }

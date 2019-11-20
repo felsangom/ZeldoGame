@@ -10,10 +10,30 @@ public class Player extends Entity {
 	public boolean left, up, right, down;
 	public int speed = 2;
 
-	private BufferedImage[] playerRight;
-	private BufferedImage[] playerLeft;
-	private BufferedImage[] playerUp;
-	private BufferedImage[] playerDown;
+	private BufferedImage[] playerRight = {
+		Game.spritesheet.getSprite(0, 10 * 32, width, height),
+		Game.spritesheet.getSprite(1 * 32, 10 * 32, width, height),
+		Game.spritesheet.getSprite(2 * 32, 10 * 32, width, height)
+	};
+
+	private BufferedImage[] playerLeft = {
+		Game.spritesheet.getSprite(0, 9 * 32, width, height),
+		Game.spritesheet.getSprite(1 * 32, 9 * 32, width, height),
+		Game.spritesheet.getSprite(2 * 32, 9 * 32, width, height)
+	};
+
+	private BufferedImage[] playerUp = {
+		Game.spritesheet.getSprite(0, 11 * 32, width, height),
+		Game.spritesheet.getSprite(1 * 32, 11 * 32, width, height),
+		Game.spritesheet.getSprite(2 * 32, 11 * 32, width, height)
+	};
+
+	private BufferedImage[] playerDown = {
+		Game.spritesheet.getSprite(0, 8 * 32, width, height),
+		Game.spritesheet.getSprite(1 * 32, 8 * 32, width, height),
+		Game.spritesheet.getSprite(2 * 32, 8 * 32, width, height)
+	};
+
 	private BufferedImage lastRendered;
 
 	private int frames = 0;
@@ -22,28 +42,8 @@ public class Player extends Entity {
 	private int maxSpriteIndex = 2;
 	private boolean increasingAnimation = true;
 	
-	public Player(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
-
-		playerRight = new BufferedImage[3];
-		playerRight[0] = Game.spritesheet.getSprite(0, 10 * 32, width, height);
-		playerRight[1] = Game.spritesheet.getSprite(1 * 32, 10 * 32, width, height);
-		playerRight[2] = Game.spritesheet.getSprite(2 * 32, 10 * 32, width, height);
-
-		playerLeft = new BufferedImage[3];
-		playerLeft[0] = Game.spritesheet.getSprite(0, 9 * 32, width, height);
-		playerLeft[1] = Game.spritesheet.getSprite(1 * 32, 9 * 32, width, height);
-		playerLeft[2] = Game.spritesheet.getSprite(2 * 32, 9 * 32, width, height);
-
-		playerUp = new BufferedImage[3];
-		playerUp[0] = Game.spritesheet.getSprite(0, 11 * 32, width, height);
-		playerUp[1] = Game.spritesheet.getSprite(1 * 32, 11 * 32, width, height);
-		playerUp[2] = Game.spritesheet.getSprite(2 * 32, 11 * 32, width, height);
-
-		playerDown = new BufferedImage[3];
-		playerDown[0] = Game.spritesheet.getSprite(0, 8 * 32, width, height);
-		playerDown[1] = Game.spritesheet.getSprite(1 * 32, 8 * 32, width, height);
-		playerDown[2] = Game.spritesheet.getSprite(2 * 32, 8 * 32, width, height);
+	public Player(int x, int y, BufferedImage sprite) {
+		super(x, y, sprite);
 	}
 
 	public void tick() {

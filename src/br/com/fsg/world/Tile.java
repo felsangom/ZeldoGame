@@ -37,6 +37,6 @@ public class Tile {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(sprite, x * WIDTH, y * HEIGHT, null);
+		g.drawImage(sprite, (x * WIDTH) - Camera.x, (y * HEIGHT) - Camera.y, null);
 	}
 }

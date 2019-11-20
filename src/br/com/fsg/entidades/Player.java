@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
+import br.com.fsg.world.Camera;
 
 public class Player extends Entity {
 
@@ -37,7 +38,7 @@ public class Player extends Entity {
 	private BufferedImage lastRendered;
 
 	private int frames = 0;
-	private int maxFrames = 5;
+	private int maxFrames = 7;
 	private int spriteIndex = 0;
 	private int maxSpriteIndex = 2;
 	private boolean increasingAnimation = true;
@@ -82,6 +83,9 @@ public class Player extends Entity {
 				}
 			}
 		}
+
+		Camera.x = x - (Game.WINDOW_WIDTH / 2);
+		Camera.y = y - (Game.WINDOW_HEIGHT / 2);
 	}
 
 	public void render(Graphics g) {
@@ -101,6 +105,6 @@ public class Player extends Entity {
 			lastRendered = playerDown[0];
 		}
 
-		g.drawImage(lastRendered, x, y, null);
+		g.drawImage(lastRendered, x - Camera.x, y - Camera.y, null);
 	}
 }

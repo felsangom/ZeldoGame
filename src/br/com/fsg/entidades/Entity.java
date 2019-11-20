@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
+import br.com.fsg.world.Camera;
 import br.com.fsg.world.Tile;
 
 public class Entity {
@@ -61,6 +62,6 @@ public class Entity {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(sprite, x * Tile.WIDTH, y * Tile.HEIGHT, null);
+		g.drawImage(sprite, (x * Tile.WIDTH) - Camera.x, (y * Tile.HEIGHT) - Camera.y, null);
 	}
 }

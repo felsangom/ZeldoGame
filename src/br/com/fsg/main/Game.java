@@ -26,9 +26,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = false;
-	private final int WINDOW_WIDTH = 1024;
-	private final int WINDOW_HEIGHT = 768;
-	private final int SCALE = 1;
+	public static final int WINDOW_WIDTH = 320;
+	public static final int WINDOW_HEIGHT = 240;
+	private final int SCALE = 3;
 
 	private BufferedImage image;
 

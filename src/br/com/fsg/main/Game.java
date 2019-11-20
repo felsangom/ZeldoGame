@@ -28,6 +28,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private boolean isRunning = false;
 	public static final int WINDOW_WIDTH = 320;
 	public static final int WINDOW_HEIGHT = 240;
+	public static int MAX_HORIZONTAL_TILES = WINDOW_WIDTH / 32;
+	public static int MAX_VERTICAL_TILES = WINDOW_HEIGHT / 32;
 	private final int SCALE = 3;
 
 	private BufferedImage image;

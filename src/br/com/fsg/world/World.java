@@ -16,6 +16,8 @@ import br.com.fsg.main.Game;
 public class World {
 
 	private Tile[] tiles;
+	public static int totalMapWidth;
+	public static int totalMapHeight;
 	
 	public World(String path) {
 		try {
@@ -23,6 +25,9 @@ public class World {
 			int[] pixels = new int[map.getWidth() * map.getHeight()];
 			map.getRGB(0, 0, map.getWidth(), map.getHeight(), pixels, 0, map.getWidth());
 
+			totalMapWidth = map.getWidth() * Tile.WIDTH;
+			totalMapHeight = map.getHeight() * Tile.HEIGHT;
+			
 			tiles = new Tile[pixels.length];
 
 			int x, y = 0;
@@ -77,9 +82,23 @@ public class World {
 	}
 
 	public void render(Graphics g) {
+		int x, y = 0;
+		int maxX = (int) Math.sqrt(tiles.length);
+
+		int startX = Camera.x / Tile.WIDTH;
+		int startY = Camera.y / Tile.HEIGHT;
+		int endX = startX + Game.MAX_HORIZONTAL_TILES + 1;
+		int endY = startY + Game.MAX_VERTICAL_TILES + 1;
+	
 		for (int indice = 0; indice < tiles.length; indice++) {
-			Tile tile = tiles[indice];
-			tile.render(g);
+			x = indice % maxX;
+			if (indice > 0 && indice % maxX == 0)
+				y++;
+
+			if (x >= startX && x <= endX && y >= startY && y <= endY) {
+				Tile tile = tiles[indice];
+				tile.render(g);				
+			}
 		}
 	}
 }

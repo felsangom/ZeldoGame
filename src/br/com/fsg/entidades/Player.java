@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
 import br.com.fsg.world.Camera;
+import br.com.fsg.world.World;
 
 public class Player extends Entity {
 
@@ -83,9 +84,9 @@ public class Player extends Entity {
 				}
 			}
 		}
-
-		Camera.x = x - (Game.WINDOW_WIDTH / 2);
-		Camera.y = y - (Game.WINDOW_HEIGHT / 2);
+		
+		Camera.x = Camera.clamp(x - (Game.WINDOW_WIDTH / 2), 0, World.totalMapWidth - Game.WINDOW_WIDTH);
+		Camera.y = Camera.clamp(y - (Game.WINDOW_HEIGHT / 2), 0, World.totalMapHeight - Game.WINDOW_HEIGHT);
 	}
 
 	public void render(Graphics g) {

@@ -13,8 +13,8 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import br.com.fsg.entidades.Entidade;
-import br.com.fsg.entidades.Jogador;
+import br.com.fsg.entidades.Entity;
+import br.com.fsg.entidades.Player;
 import br.com.fsg.graficos.Spritesheet;
 import br.com.fsg.world.World;
 
@@ -25,15 +25,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = false;
-	private final int WIDTH = 160;
-	private final int HEIGHT = 120;
-	private final int SCALE = 4;
+	private final int WIDTH = 320;
+	private final int HEIGHT = 240;
+	private final int SCALE = 3;
 
 	private BufferedImage image;
 
 	public static Spritesheet spritesheet;
-	public List<Entidade> entidades;
-	private Jogador jogador;
+	public List<Entity> entidades;
+	private Player jogador;
 
 	public static World world;
 	
@@ -48,12 +48,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		initFrame();
 
 		// Inicializa dos objetos
-		world = new World("/map.png");
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		entidades = new ArrayList<Entidade>();
+		entidades = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
+		world = new World("/map.png");
 
-		jogador = new Jogador(0, 0, 32, 32, spritesheet.getSprite(0, 8 * 32, 32, 32));
+		jogador = new Player(0, 0, 32, 32, spritesheet.getSprite(0, 8 * 32, 32, 32));
 		entidades.add(jogador);
 	}
 	
@@ -84,7 +84,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	}
 
 	public void tick() {
-		for (Entidade entidade : entidades) {
+		for (Entity entidade : entidades) {
 			entidade.tick();
 		}
 	}
@@ -99,9 +99,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		Graphics g = image.getGraphics();
 		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+
+		world.render(g);
 		
-		// Renderiza��o do jogo
-		for (Entidade entidade : entidades) {
+		// Renderização do jogo
+		for (Entity entidade : entidades) {
 			entidade.render(g);
 		}
 		

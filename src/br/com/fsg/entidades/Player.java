@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
 
-public class Jogador extends Entidade {
+public class Player extends Entity {
 
 	public boolean left, up, right, down;
 	public int speed = 2;
@@ -22,7 +22,7 @@ public class Jogador extends Entidade {
 	private int maxSpriteIndex = 2;
 	private boolean increasingAnimation = true;
 	
-	public Jogador(int x, int y, int width, int height, BufferedImage sprite) {
+	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 
 		playerRight = new BufferedImage[3];

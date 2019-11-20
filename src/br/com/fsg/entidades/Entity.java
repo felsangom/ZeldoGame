@@ -3,7 +3,7 @@ package br.com.fsg.entidades;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public class Entidade {
+public class Entity {
 
 	protected int x;
 	protected int y;
@@ -12,7 +12,7 @@ public class Entidade {
 
 	private BufferedImage sprite;
 
-	public Entidade(int x, int y, int width, int height, BufferedImage sprite) {
+	public Entity(int x, int y, int width, int height, BufferedImage sprite) {
 		this.x = x;
 		this.y = y;
 		this.width = width;

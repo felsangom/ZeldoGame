@@ -1,6 +1,7 @@
 package br.com.fsg.entidades;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
@@ -44,13 +45,37 @@ public class Enemy extends Entity {
 	private int spriteIndex = 0;
 	private int maxSpriteIndex = 2;
 	private boolean increasingAnimation = true;
+	private double lastTimeAttacked;
+	private int attackSpeed;
 	
 	public Enemy(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite);
+		attackSpeed = Game.random.nextInt((1000 - 400) + 1) + 400;
+		lastTimeAttacked = System.currentTimeMillis();
 	}
 
 	@Override
 	public void tick() {
+		if (collidingWithPlayer()) {
+			if (Game.random.nextInt(100) < 10) {
+				if (System.currentTimeMillis() - lastTimeAttacked >= attackSpeed) {
+					lastTimeAttacked = System.currentTimeMillis();
+
+					int damage = Game.random.nextInt(15);
+					if (damage > 0) {
+						Game.player.life -= damage;
+						if (Game.player.life <= 0) {
+							// Game Over!
+						}
+					} else {
+						// Errou o ataque
+					}
+				}
+			}
+
+			return;
+		}
+
 		if (Game.random.nextInt(10) < 3) {
 			if ((int) x < Game.player.x && World.isFree((int) (x + speed), (int) y)) {
 				x += speed;
@@ -103,6 +128,12 @@ public class Enemy extends Entity {
 		}
 	}
 
+	public boolean collidingWithPlayer() {
+		Rectangle enemyRect = new Rectangle(this.getX(), this.getY(), Tile.WIDTH, Tile.HEIGHT);
+		Rectangle playerRect = new Rectangle(Game.player.getX(), Game.player.getY(), Tile.WIDTH, Tile.HEIGHT);
+		return enemyRect.intersects(playerRect);
+	}
+	
 	public void render(Graphics g) {
 		if (up) {
 			lastRendered = enemyUp[spriteIndex];

@@ -9,9 +9,19 @@ import br.com.fsg.world.World;
 
 public class Player extends Entity {
 
-	public boolean left, up, right, down;
+	public int maxLife = 100;
+	public int life = maxLife;
 	public int speed = 2;
+	public boolean left, up, right, down;
 
+	private BufferedImage lastRendered;
+
+	private int frames = 0;
+	private int maxFrames = 7;
+	private int spriteIndex = 0;
+	private int maxSpriteIndex = 2;
+	private boolean increasingAnimation = true;
+	
 	private BufferedImage[] playerRight = {
 		Game.spritesheet.getSprite(0, 10 * 32, width, height),
 		Game.spritesheet.getSprite(1 * 32, 10 * 32, width, height),
@@ -36,14 +46,6 @@ public class Player extends Entity {
 		Game.spritesheet.getSprite(2 * 32, 8 * 32, width, height)
 	};
 
-	private BufferedImage lastRendered;
-
-	private int frames = 0;
-	private int maxFrames = 7;
-	private int spriteIndex = 0;
-	private int maxSpriteIndex = 2;
-	private boolean increasingAnimation = true;
-	
 	public Player(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite);
 	}

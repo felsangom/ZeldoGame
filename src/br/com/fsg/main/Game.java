@@ -38,8 +38,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	public static Spritesheet spritesheet;
 	public static List<Entity> entities;
-	public static Player player;
 
+	public static UI ui;
+	public static Player player;
 	public static World world;
 	
 	public static void main(String[] args) {
@@ -59,6 +60,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		player = new Player(0, 0, spritesheet.getSprite(0, 8 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT));
 		entities.add(player);
 
+		ui = new UI();
 		world = new World("/map.png");
 	}
 	
@@ -111,6 +113,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		for (Entity entidade : entities) {
 			entidade.render(g);
 		}
+
+		ui.render(g);
 		
 		g.dispose();
 		g = bs.getDrawGraphics();

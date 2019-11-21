@@ -23,7 +23,7 @@ public class Tile {
 	};
 
 	public static BufferedImage floor() {
-		return FLOOR[new Random().nextInt(FLOOR.length)];
+		return FLOOR[Game.random.nextInt(FLOOR.length)];
 	}
 
 	public static BufferedImage wall() {

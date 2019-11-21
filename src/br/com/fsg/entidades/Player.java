@@ -49,20 +49,19 @@ public class Player extends Entity {
 	}
 
 	public void tick() {
-	
-		if (right) {
+		if (right && World.isFree(this.getX() + speed, this.getY())) {
 			x += speed;
 		}
 
-		if (left) {
+		if (left && World.isFree(this.getX() - speed, this.getY())) {
 			x -= speed;
 		}
 
-		if (up) {
+		if (up && World.isFree(this.getX(), this.getY() - speed)) {
 			y -= speed;
 		}
 
-		if (down) {
+		if (down && World.isFree(this.getX(), this.getY() + speed)) {
 			y += speed;
 		}
 
@@ -85,8 +84,8 @@ public class Player extends Entity {
 			}
 		}
 		
-		Camera.x = Camera.clamp(x - (Game.WINDOW_WIDTH / 2), 0, World.totalMapWidth - Game.WINDOW_WIDTH);
-		Camera.y = Camera.clamp(y - (Game.WINDOW_HEIGHT / 2), 0, World.totalMapHeight - Game.WINDOW_HEIGHT);
+		Camera.x = Camera.clamp(this.getX() - (Game.WINDOW_WIDTH / 2), 0, World.totalMapWidth - Game.WINDOW_WIDTH);
+		Camera.y = Camera.clamp(this.getY() - (Game.WINDOW_HEIGHT / 2), 0, World.totalMapHeight - Game.WINDOW_HEIGHT);
 	}
 
 	public void render(Graphics g) {
@@ -106,6 +105,6 @@ public class Player extends Entity {
 			lastRendered = playerDown[0];
 		}
 
-		g.drawImage(lastRendered, x - Camera.x, y - Camera.y, null);
+		g.drawImage(lastRendered, this.getX() - Camera.x, this.getY() - Camera.y, null);
 	}
 }

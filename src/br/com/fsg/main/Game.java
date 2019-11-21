@@ -10,6 +10,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -30,6 +31,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static final int WINDOW_HEIGHT = 240;
 	public static int MAX_HORIZONTAL_TILES = WINDOW_WIDTH / 32;
 	public static int MAX_VERTICAL_TILES = WINDOW_HEIGHT / 32;
+	public static Random random = new Random();
 	private final int SCALE = 3;
 
 	private BufferedImage image;

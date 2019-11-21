@@ -15,8 +15,8 @@ public class Entity {
 	
 	private BufferedImage sprite;
 
-	protected int x;
-	protected int y;
+	protected double x;
+	protected double y;
 	protected int width;
 	protected int height;
 
@@ -29,15 +29,15 @@ public class Entity {
 	}
 
 	public int getX() {
-		return this.x;
+		return (int) this.x;
 	}
 
 	public void setX(int x) {
 		this.x = x;
 	}
 
-	public int getY(int x) {
-		return this.y;
+	public int getY() {
+		return (int) this.y;
 	}
 
 	public void setY(int y) {
@@ -62,6 +62,6 @@ public class Entity {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(sprite, (x * Tile.WIDTH) - Camera.x, (y * Tile.HEIGHT) - Camera.y, null);
+		g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
 	}
 }

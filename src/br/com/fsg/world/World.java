@@ -15,18 +15,24 @@ import br.com.fsg.main.Game;
 
 public class World {
 
-	private Tile[] tiles;
+	private static Tile[] tiles;
 	public static int totalMapWidth;
 	public static int totalMapHeight;
+	public static int mapPixelsWidth;
+	public static int mapPixelsHeight;
 	
 	public World(String path) {
 		try {
 			BufferedImage map = ImageIO.read(getClass().getResource(path));
-			int[] pixels = new int[map.getWidth() * map.getHeight()];
-			map.getRGB(0, 0, map.getWidth(), map.getHeight(), pixels, 0, map.getWidth());
+			mapPixelsWidth = map.getWidth();
+			mapPixelsHeight = map.getHeight();
 
-			totalMapWidth = map.getWidth() * Tile.WIDTH;
-			totalMapHeight = map.getHeight() * Tile.HEIGHT;
+			int[] pixels = new int[mapPixelsWidth * mapPixelsHeight];
+			map.getRGB(0, 0, mapPixelsWidth, mapPixelsHeight, pixels, 0, mapPixelsWidth);
+
+
+			totalMapWidth = mapPixelsWidth * Tile.WIDTH;
+			totalMapHeight = mapPixelsHeight * Tile.HEIGHT;
 			
 			tiles = new Tile[pixels.length];
 
@@ -52,11 +58,11 @@ public class World {
 						break;
 					// Pixel vermelho = inimigo
 					case 0xFFFF0000:
-						Game.entities.add(new Enemy(x, y, Entity.ENEMY_SPRITE));
+						Game.entities.add(new Enemy(x * Tile.WIDTH, y * Tile.HEIGHT, Entity.ENEMY_SPRITE));
 						break;
 					// Pixel ciano = munição
 					case 0xFF00E0FF:
-						Game.entities.add(new Ammo(x, y, Entity.AMMO_SPRITE));
+						Game.entities.add(new Ammo(x * Tile.WIDTH, y * Tile.HEIGHT, Entity.AMMO_SPRITE));
 						break;
 					// Pixel verde = Player
 					case 0xFF17FF00:
@@ -64,11 +70,11 @@ public class World {
 						break;
 					// Pixel rosa = vida
 					case 0xFFE800FF:
-						Game.entities.add(new Potion(x, y, Entity.POTION_SPRITE));
+						Game.entities.add(new Potion(x * Tile.WIDTH, y * Tile.HEIGHT, Entity.POTION_SPRITE));
 						break;
 					// Pixel amarelo = arma
 					case 0xFFFFF700:
-						Game.entities.add(new Weapon(x, y, Entity.WEAPON_SPRITE));
+						Game.entities.add(new Weapon(x * Tile.WIDTH, y * Tile.HEIGHT, Entity.WEAPON_SPRITE));
 						break;
 					// Chão
 					default:
@@ -100,5 +106,26 @@ public class World {
 				tile.render(g);				
 			}
 		}
+	}
+
+	public static boolean isFree(int nextX, int nextY) {
+		int x1 = nextX / Tile.WIDTH;
+		int y1 = nextY / Tile.HEIGHT;
+
+		int x2 = (nextX + Tile.WIDTH - 1) / Tile.WIDTH;
+		int y2 = nextY / Tile.HEIGHT;
+
+		int x3 = nextX / Tile.WIDTH;
+		int y3 = (nextY + Tile.HEIGHT - 1) / Tile.HEIGHT;
+
+		int x4 = (nextX + Tile.WIDTH - 1) / Tile.WIDTH;
+		int y4 = (nextY + Tile.HEIGHT - 1) / Tile.HEIGHT;
+
+		return !(
+			(tiles[x1 + (y1 * mapPixelsWidth)] instanceof WallTile) ||
+			(tiles[x2 + (y2 * mapPixelsWidth)] instanceof WallTile) ||
+			(tiles[x3 + (y3 * mapPixelsWidth)] instanceof WallTile) ||
+			(tiles[x4 + (y4 * mapPixelsWidth)] instanceof WallTile)
+		);
 	}
 }

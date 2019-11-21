@@ -6,6 +6,8 @@ import java.awt.Graphics;
 
 public class UI {
 
+	private Font font = new Font("arial", Font.BOLD, 9);
+	
 	public void render(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.drawRect(4, 4, 101, 11);
@@ -17,7 +19,7 @@ public class UI {
 		g.fillRect(5, 5, (Game.player.life * 100) / Game.player.maxLife, 10);
 
 		g.setColor(Color.WHITE);
-		g.setFont(new Font("arial", Font.BOLD, 9));
+		g.setFont(font);
 		g.drawString(Game.player.life + "/" + Game.player.maxLife, 40, 14);
 	}
 }

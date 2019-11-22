@@ -44,8 +44,8 @@ public class Enemy extends Entity {
 	public boolean left, up, right, down;
 	public boolean tookDamage = false;
 	private int blinkingFrames = 0;
-	private double minSpeed = 0.6;
-	private double maxSpeed = 1.4;
+	private double minSpeed = 0.1;
+	private double maxSpeed = 0.4;
 	private double speed;
 	public int maxLife = 100;
 	public int life = maxLife;
@@ -188,12 +188,11 @@ public class Enemy extends Entity {
 					lastRendered = enemyLeft[spriteIndex];
 				}
 
-				if (lastRendered == null && lastSpriteBeforeBlink != null) {
+				if (lastSpriteBeforeBlink != null) {
 					lastRendered = lastSpriteBeforeBlink;
-				} else {
-					lastRendered = enemyDown[0];
+					lastSpriteBeforeBlink = null;
 				}
-			}			
+			}
 		}
 
 		g.drawImage(lastRendered, this.getX() - Camera.x, this.getY() - Camera.y, null);

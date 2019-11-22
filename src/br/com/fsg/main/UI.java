@@ -5,19 +5,25 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 
 public class UI {
 
+	private String pause = "Pausa";
+	private String resume = "Pressione ESC para voltar ao jogo";
 	private String gameOver = "Game Over";
+	private String startOver = "Pressione ENTER para reiniciar";
 	private Font lifeFont = new Font("arial", Font.BOLD, 9);
 	private Font ammoFont = new Font("arial", Font.BOLD, 10);
-	private Font gameOverFont = new Font("arial", Font.BOLD, 25);
+	private Font overlayTitleFont = new Font("arial", Font.BOLD, 25);
+	private Font overlaySubtitleFont = new Font("arial", Font.BOLD, 15);
 	private Color gameOverBackgroundColor = new Color(0, 0, 0, 100);
 	
 	public void render(Graphics g) {
 		if (Game.STATE == Game.NORMAL_STATE) {
 			renderGameUI(g);
+		} else if (Game.STATE == Game.PAUSE_STATE) {
+			renderGameUI(g);
+			renderGamePause(g);
 		} else if (Game.STATE == Game.GAME_OVER_STATE) {
 			renderGameUI(g);
 			renderGameOver(g);
@@ -45,17 +51,39 @@ public class UI {
 		g.drawString("Munição: " + Game.player.ammo, 250, 13);		
 	}
 
+	public void renderGamePause(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(gameOverBackgroundColor);
+		g2.fillRect(0, 0, Game.WINDOW_WIDTH * Game.SCALE, Game.WINDOW_HEIGHT * Game.SCALE);
+
+		g.setFont(overlayTitleFont);
+		g.setColor(Color.WHITE);
+		FontMetrics metrics = g.getFontMetrics(overlayTitleFont);
+		int pauseWidth = metrics.stringWidth(pause);
+		int pauseHeight = metrics.getHeight();
+		g.drawString(pause, (Game.WINDOW_WIDTH / 2) - (pauseWidth / 2), (Game.WINDOW_HEIGHT / 2) - (pauseHeight / 2));
+
+		g.setFont(overlaySubtitleFont);
+		metrics = g.getFontMetrics(overlaySubtitleFont);
+		pauseWidth = metrics.stringWidth(resume);
+		g.drawString(resume, (Game.WINDOW_WIDTH / 2) - (pauseWidth / 2), (Game.WINDOW_HEIGHT / 2) + 10);
+	}
+	
 	public void renderGameOver(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(gameOverBackgroundColor);
 		g2.fillRect(0, 0, Game.WINDOW_WIDTH * Game.SCALE, Game.WINDOW_HEIGHT * Game.SCALE);
 
-		g.setFont(gameOverFont);
+		g.setFont(overlayTitleFont);
 		g.setColor(Color.WHITE);
-		FontMetrics metrics = g.getFontMetrics(gameOverFont);
-		Rectangle2D gameOverBounds = metrics.getStringBounds(gameOver, g);
-		int gameOverWidth = (int) gameOverBounds.getWidth();
-		int gameOverHeight = (int) gameOverBounds.getHeight();
-		g.drawString(gameOver, (Game.WINDOW_WIDTH / 2) + (gameOverWidth / 2), (Game.WINDOW_HEIGHT / 2) - (gameOverHeight / 2));
+		FontMetrics metrics = g.getFontMetrics(overlayTitleFont);
+		int gameOverWidth = metrics.stringWidth(gameOver);
+		int gameOverHeight = metrics.getHeight();
+		g.drawString(gameOver, (Game.WINDOW_WIDTH / 2) - (gameOverWidth / 2), (Game.WINDOW_HEIGHT / 2) - (gameOverHeight / 2));
+
+		g.setFont(overlaySubtitleFont);
+		metrics = g.getFontMetrics(overlaySubtitleFont);
+		gameOverWidth = metrics.stringWidth(startOver);
+		g.drawString(startOver, (Game.WINDOW_WIDTH / 2) - (gameOverWidth / 2), (Game.WINDOW_HEIGHT / 2) + 10);
 	}
 }

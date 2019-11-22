@@ -27,6 +27,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	public static int NORMAL_STATE = 1;
 	public static int GAME_OVER_STATE = 2;
+	public static int PAUSE_STATE = 3;
 	public static int STATE;
 	
 	public static JFrame frame;
@@ -202,24 +203,39 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			player.right = true;
+		if (STATE == NORMAL_STATE) {
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+				player.right = true;
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+				player.left = true;
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+				player.up = true;
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {;
+				player.down = true;
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_X) {
+				player.shoot();
+			}
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			player.left = true;
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			if (STATE == PAUSE_STATE) {
+				STATE = NORMAL_STATE;
+			} else if (STATE == NORMAL_STATE) {
+				STATE = PAUSE_STATE;
+			}
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			player.up = true;
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {;
-			player.down = true;
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_X) {
-			player.shoot();
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			currentLevel = 1;
+			initGame(currentLevel);
 		}
 	}
 

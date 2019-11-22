@@ -2,7 +2,6 @@ package br.com.fsg.world;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
 import br.com.fsg.main.Game;
 

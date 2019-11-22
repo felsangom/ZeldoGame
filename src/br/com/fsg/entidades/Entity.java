@@ -22,6 +22,9 @@ public class Entity {
 	
 	protected BufferedImage sprite;
 
+	protected boolean visible = true;
+	protected double collectedTime;
+
 	protected double x;
 	protected double y;
 	protected int width;
@@ -67,7 +70,11 @@ public class Entity {
 	}
 
 	public boolean collidingWith(Entity other) {
-		return this.collisionArea.intersects(other.collisionArea);
+		if (this.visible && other.visible) {
+			return this.collisionArea.intersects(other.collisionArea);			
+		}
+
+		return false;
 	}
 	
 	public void tick() {
@@ -75,6 +82,8 @@ public class Entity {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
+		if (visible) {
+			g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);			
+		}
 	}
 }

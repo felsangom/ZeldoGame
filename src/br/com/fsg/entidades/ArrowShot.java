@@ -38,8 +38,21 @@ public class ArrowShot extends Entity {
 			y += speed;
 		} else {
 			Game.entitiesToRemove.add(this);
+			return;
 		}
 
+		for (Entity entity : Game.entities) {
+			if (entity instanceof Enemy) {
+				Enemy enemy = (Enemy) entity;
+				if (this.collidingWith(entity)) {
+					enemy.life -= 50;
+					enemy.tookDamage = true;
+					Game.entitiesToRemove.add(this);
+					return;
+				}
+			}
+		}
+		
 		super.tick();
 	}
 }

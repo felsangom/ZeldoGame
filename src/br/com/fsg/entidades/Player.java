@@ -19,10 +19,7 @@ public class Player extends Entity {
 
 	public int speed = 2;
 	public boolean left, up, right, down = false;
-	public boolean wasLeft = false;
-	public boolean wasRight = false;
-	public boolean wasUp = false;
-	public boolean wasDown = false;
+	public boolean wasLeft, wasRight, wasUp, wasDown = false;
 
 	private BufferedImage lastRendered;
 	private BufferedImage lastRenderedWeapon;
@@ -69,7 +66,12 @@ public class Player extends Entity {
 
 	public Player(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite);
-		blink.setRGB((int) x, (int) y, (new Color(0.0f, 0.0f, 0.0f, 0.0f)).getRGB());
+
+		for (int blinkX = 0; blinkX < blink.getWidth(); blinkX++) {
+			for (int blinkY = 0; blinkY < blink.getHeight(); blinkY++) {
+				blink.setRGB(blinkX, blinkY, (new Color(0.0f, 0.0f, 0.0f, 0.0f)).getRGB());				
+			}
+		}
 	}
 
 	public void shoot() {
@@ -172,7 +174,7 @@ public class Player extends Entity {
 			}
 		}
 		
-		collectItem();
+		collectItems();
 		checkGameOver();
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WINDOW_WIDTH / 2), 0, World.totalMapWidth - Game.WINDOW_WIDTH);
@@ -181,7 +183,7 @@ public class Player extends Entity {
 		super.tick();
 	}
 
-	private void collectItem() {
+	private void collectItems() {
 		for (Entity entity : Game.entities) {
 			if (entity.collidingWith(Game.player)) {
 				if (entity instanceof Potion) {
@@ -197,7 +199,8 @@ public class Player extends Entity {
 
 				} else if (entity instanceof Ammo) {
 					ammo += 2;
-					Game.entitiesToRemove.add(entity);
+					entity.collectedTime = System.currentTimeMillis();
+					entity.visible = false;
 				} else if (entity instanceof Weapon) {
 					hasWeapon = true;
 					Game.entitiesToRemove.add(entity);

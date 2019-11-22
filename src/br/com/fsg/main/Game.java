@@ -25,15 +25,21 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 3475332481195704314L;
 
+	public static int NORMAL_STATE = 1;
+	public static int GAME_OVER_STATE = 2;
+	public static int STATE;
+	
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = false;
+	public static Random random = new Random();
 	public static final int WINDOW_WIDTH = 320;
 	public static final int WINDOW_HEIGHT = 240;
+	public static final int SCALE = 3;
 	public static int MAX_HORIZONTAL_TILES = WINDOW_WIDTH / 32;
 	public static int MAX_VERTICAL_TILES = WINDOW_HEIGHT / 32;
-	public static Random random = new Random();
-	private final int SCALE = 3;
+	public static int currentLevel = 1;
+	public static final int MAX_LEVEL = 2;
 
 	private BufferedImage image = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
@@ -41,6 +47,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static List<Entity> entities;
 	public static List<Entity> entitiesToRemove;
 	public static List<ArrowShot> arrowsShot;
+	public static int enemiesLeft;
 
 	public static UI ui;
 	public static Player player;
@@ -55,10 +62,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		addKeyListener(this);
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH * SCALE, WINDOW_HEIGHT * SCALE));
 		initFrame();
-		initGame();
+		initGame(currentLevel);
 	}
 
-	public static void initGame() {
+	public static void initGame(int level) {
+		STATE = NORMAL_STATE;
+
 		entities = new ArrayList<Entity>();
 		arrowsShot = new ArrayList<ArrowShot>();
 		entitiesToRemove = new ArrayList<Entity>();
@@ -66,7 +75,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		player = new Player(0, 0, spritesheet.getSprite(0, 8 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT));
 
 		ui = new UI();
-		world = new World("/map.png");
+		world = new World("/level" + currentLevel + ".png");
 
 		entities.add(player);
 	}
@@ -98,23 +107,34 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	}
 
 	public void tick() {
-		for (Entity entidade : entities) {
-			entidade.tick();
-		}
+		if (STATE == NORMAL_STATE) {
+			for (Entity entidade : entities) {
+				entidade.tick();
+			}
 
-		for (ArrowShot arrow : arrowsShot) {
-			 arrow.tick();
-		}
+			for (ArrowShot arrow : arrowsShot) {
+				 arrow.tick();
+			}
 
-		for (Entity entity : entitiesToRemove) {
-			if (entity instanceof ArrowShot) {
-				arrowsShot.remove(entity);
-			} else {
-				entities.remove(entity);				
+			for (Entity entity : entitiesToRemove) {
+				if (entity instanceof ArrowShot) {
+					arrowsShot.remove(entity);
+				} else {
+					entities.remove(entity);				
+				}
+			}
+
+			Game.entitiesToRemove.clear();
+
+			if (enemiesLeft == 0) {
+				currentLevel += 1;
+				if (currentLevel > MAX_LEVEL) {
+					currentLevel = 1;
+				}
+
+				initGame(currentLevel);
 			}
 		}
-
-		Game.entitiesToRemove.clear();
 	}
 	
 	public void render() {

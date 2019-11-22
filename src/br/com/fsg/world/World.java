@@ -59,6 +59,7 @@ public class World {
 					// Pixel vermelho = inimigo
 					case 0xFFFF0000:
 						Game.entities.add(new Enemy(x * Tile.WIDTH, y * Tile.HEIGHT, Entity.ENEMY_SPRITE));
+						Game.enemiesLeft++;
 						break;
 					// Pixel ciano = munição
 					case 0xFF00E0FF:

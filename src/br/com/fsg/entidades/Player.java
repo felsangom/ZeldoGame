@@ -211,7 +211,7 @@ public class Player extends Entity {
 
 	private void checkGameOver() {
 		if (life <= 0) {
-			Game.initGame();
+			Game.STATE = Game.GAME_OVER_STATE;
 		}
 	}
 	

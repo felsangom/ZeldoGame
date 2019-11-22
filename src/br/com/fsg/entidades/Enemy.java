@@ -85,6 +85,7 @@ public class Enemy extends Entity {
 			}
 
 			Game.entitiesToRemove.add(this);
+			Game.enemiesLeft--;
 		} else {
 			if (collidingWith(Game.player)) {
 				if (Game.random.nextInt(100) < 10) {
@@ -95,6 +96,8 @@ public class Enemy extends Entity {
 						if (damage > 0) {
 							Game.player.tookDamage = true;
 							Game.player.life -= damage;
+							if (Game.player.life < 0)
+								Game.player.life = 0;
 						} else {
 							// Errou o ataque
 						}

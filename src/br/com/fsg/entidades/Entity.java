@@ -14,8 +14,13 @@ public class Entity {
 	public static BufferedImage WEAPON_SPRITE = Game.spritesheet.getSprite(9 * Tile.WIDTH, 15 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
 	public static BufferedImage AMMO_SPRITE = Game.spritesheet.getSprite(10 * Tile.WIDTH, 15 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
 	public static BufferedImage POTION_SPRITE = Game.spritesheet.getSprite(11 * Tile.WIDTH, 15 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
+
+	public static BufferedImage ARROW_LEFT = Game.spritesheet.getSprite(12 * Tile.WIDTH, 14 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
+	public static BufferedImage ARROW_RIGHT = Game.spritesheet.getSprite(13 * Tile.WIDTH, 14 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
+	public static BufferedImage ARROW_UP = Game.spritesheet.getSprite(14 * Tile.WIDTH, 14 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
+	public static BufferedImage ARROW_DOWN = Game.spritesheet.getSprite(15 * Tile.WIDTH, 14 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
 	
-	private BufferedImage sprite;
+	protected BufferedImage sprite;
 
 	protected double x;
 	protected double y;

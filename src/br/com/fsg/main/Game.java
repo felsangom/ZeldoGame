@@ -14,6 +14,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import br.com.fsg.entidades.ArrowShot;
 import br.com.fsg.entidades.Entity;
 import br.com.fsg.entidades.Player;
 import br.com.fsg.graficos.Spritesheet;
@@ -34,11 +35,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static Random random = new Random();
 	private final int SCALE = 3;
 
-	private BufferedImage image;
+	private BufferedImage image = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
 	public static Spritesheet spritesheet;
 	public static List<Entity> entities;
 	public static List<Entity> entitiesToRemove;
+	public static List<ArrowShot> arrowsShot;
 
 	public static UI ui;
 	public static Player player;
@@ -53,17 +55,20 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		addKeyListener(this);
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH * SCALE, WINDOW_HEIGHT * SCALE));
 		initFrame();
+		initGame();
+	}
 
-		// Inicializa dos objetos
-		image = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
+	public static void initGame() {
 		entities = new ArrayList<Entity>();
+		arrowsShot = new ArrayList<ArrowShot>();
 		entitiesToRemove = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0, 0, spritesheet.getSprite(0, 8 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT));
-		entities.add(player);
 
 		ui = new UI();
 		world = new World("/map.png");
+
+		entities.add(player);
 	}
 	
 	public void initFrame() {
@@ -97,8 +102,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			entidade.tick();
 		}
 
-		for (Entity entity : Game.entitiesToRemove) {
-			Game.entities.remove(entity);
+		for (ArrowShot arrow : arrowsShot) {
+			 arrow.tick();
+		}
+
+		for (Entity entity : entitiesToRemove) {
+			if (entity instanceof ArrowShot) {
+				arrowsShot.remove(entity);
+			} else {
+				entities.remove(entity);				
+			}
 		}
 
 		Game.entitiesToRemove.clear();
@@ -122,6 +135,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			entidade.render(g);
 		}
 
+		for (ArrowShot arrow : arrowsShot) {
+			arrow.render(g);
+		}
+		
 		ui.render(g);
 		
 		g.dispose();
@@ -180,6 +197,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {;
 			player.down = true;
 		}
+
+		if (e.getKeyCode() == KeyEvent.VK_X) {
+			player.shoot();
+		}
 	}
 
 	@Override
@@ -221,6 +242,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.up = false;
 			player.down = true;
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_X) {
+			player.shoot();
 		}
 	}
 }

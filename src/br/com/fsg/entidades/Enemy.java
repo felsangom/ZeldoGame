@@ -11,7 +11,9 @@ import br.com.fsg.world.World;
 public class Enemy extends Entity {
 
 	public boolean left, up, right, down;
-	private double speed = 0.6;
+	private double minSpeed = 0.6;
+	private double maxSpeed = 1.4;
+	private double speed;
 
 	private BufferedImage[] enemyRight = {
 		Game.spritesheet.getSprite(6 * Tile.WIDTH, 10 * Tile.HEIGHT, width, height),
@@ -49,7 +51,8 @@ public class Enemy extends Entity {
 	
 	public Enemy(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite);
-		attackSpeed = Game.random.nextInt((1000 - 400) + 1) + 400;
+		speed = minSpeed + (maxSpeed - minSpeed) * Game.random.nextDouble();
+		attackSpeed = Game.random.nextInt((1000 - 800) + 1) + 800;
 		lastTimeAttacked = System.currentTimeMillis();
 	}
 
@@ -62,10 +65,8 @@ public class Enemy extends Entity {
 
 					int damage = Game.random.nextInt(15);
 					if (damage > 0) {
+						Game.player.tookDamage = true;
 						Game.player.life -= damage;
-						if (Game.player.life <= 0) {
-							// Game Over!
-						}
 					} else {
 						// Errou o ataque
 					}

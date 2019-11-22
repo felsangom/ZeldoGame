@@ -38,6 +38,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	public static Spritesheet spritesheet;
 	public static List<Entity> entities;
+	public static List<Entity> entitiesToRemove;
 
 	public static UI ui;
 	public static Player player;
@@ -56,6 +57,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		// Inicializa dos objetos
 		image = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
+		entitiesToRemove = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0, 0, spritesheet.getSprite(0, 8 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT));
 		entities.add(player);
@@ -94,6 +96,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		for (Entity entidade : entities) {
 			entidade.tick();
 		}
+
+		for (Entity entity : Game.entitiesToRemove) {
+			Game.entities.remove(entity);
+		}
+
+		Game.entitiesToRemove.clear();
 	}
 	
 	public void render() {

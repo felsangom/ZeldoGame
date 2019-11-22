@@ -11,6 +11,8 @@ public class Player extends Entity {
 
 	public int maxLife = 100;
 	public int life = maxLife;
+	public int ammo = 0;
+
 	public int speed = 2;
 	public boolean left, up, right, down;
 
@@ -85,11 +87,34 @@ public class Player extends Entity {
 				}
 			}
 		}
+
+		collectItem();
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WINDOW_WIDTH / 2), 0, World.totalMapWidth - Game.WINDOW_WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.WINDOW_HEIGHT / 2), 0, World.totalMapHeight - Game.WINDOW_HEIGHT);
+
+		super.tick();
 	}
 
+	private void collectItem() {
+		for (Entity entity : Game.entities) {
+			if (entity.collidingWith(Game.player)) {
+				if (entity instanceof Potion) {
+					if (Game.player.life + Potion.restore <= Game.player.maxLife) {
+						Game.player.life += Potion.restore;
+					} else {
+						Game.player.life = Game.player.maxLife;
+					}
+
+					Game.entitiesToRemove.add(entity);
+				} else if (entity instanceof Ammo) {
+					Game.player.ammo += 2;
+					Game.entitiesToRemove.add(entity);
+				}
+			}
+		}
+	}
+	
 	public void render(Graphics g) {
 		if (right) {
 			lastRendered = playerRight[spriteIndex]; 

@@ -1,6 +1,7 @@
 package br.com.fsg.entidades;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
@@ -8,6 +9,7 @@ import br.com.fsg.world.Camera;
 import br.com.fsg.world.Tile;
 
 public class Entity {
+
 	public static BufferedImage ENEMY_SPRITE = Game.spritesheet.getSprite(6 * Tile.WIDTH, 8 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
 	public static BufferedImage WEAPON_SPRITE = Game.spritesheet.getSprite(9 * Tile.WIDTH, 15 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
 	public static BufferedImage AMMO_SPRITE = Game.spritesheet.getSprite(10 * Tile.WIDTH, 15 * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
@@ -19,6 +21,7 @@ public class Entity {
 	protected double y;
 	protected int width;
 	protected int height;
+	protected Rectangle collisionArea;
 
 	public Entity(int x, int y, BufferedImage sprite) {
 		this.x = x;
@@ -26,6 +29,7 @@ public class Entity {
 		this.sprite = sprite;
 		this.width = sprite.getWidth();
 		this.height = sprite.getHeight();
+		collisionArea = new Rectangle(x + 5, y + 5, this.width - 10, this.height - 10);
 	}
 
 	public int getX() {
@@ -57,8 +61,12 @@ public class Entity {
 		return height;
 	}
 
+	public boolean collidingWith(Entity other) {
+		return this.collisionArea.intersects(other.collisionArea);
+	}
+	
 	public void tick() {
-
+		collisionArea = new Rectangle((int) x + 5, (int) y + 5, this.width - 10, this.height - 10);
 	}
 	
 	public void render(Graphics g) {

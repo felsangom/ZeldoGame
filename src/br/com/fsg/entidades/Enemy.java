@@ -1,7 +1,6 @@
 package br.com.fsg.entidades;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
@@ -56,7 +55,7 @@ public class Enemy extends Entity {
 
 	@Override
 	public void tick() {
-		if (collidingWithPlayer()) {
+		if (collidingWith(Game.player)) {
 			if (Game.random.nextInt(100) < 10) {
 				if (System.currentTimeMillis() - lastTimeAttacked >= attackSpeed) {
 					lastTimeAttacked = System.currentTimeMillis();
@@ -126,14 +125,10 @@ public class Enemy extends Entity {
 				down = false;
 			}
 		}
+
+		super.tick();
 	}
 
-	public boolean collidingWithPlayer() {
-		Rectangle enemyRect = new Rectangle(this.getX(), this.getY(), Tile.WIDTH, Tile.HEIGHT);
-		Rectangle playerRect = new Rectangle(Game.player.getX(), Game.player.getY(), Tile.WIDTH, Tile.HEIGHT);
-		return enemyRect.intersects(playerRect);
-	}
-	
 	public void render(Graphics g) {
 		if (up) {
 			lastRendered = enemyUp[spriteIndex];

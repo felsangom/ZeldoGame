@@ -6,7 +6,8 @@ import java.awt.Graphics;
 
 public class UI {
 
-	private Font font = new Font("arial", Font.BOLD, 9);
+	private Font lifeFont = new Font("arial", Font.BOLD, 9);
+	private Font ammoFont = new Font("arial", Font.BOLD, 10);
 	
 	public void render(Graphics g) {
 		g.setColor(Color.BLACK);
@@ -19,7 +20,13 @@ public class UI {
 		g.fillRect(5, 5, (Game.player.life * 100) / Game.player.maxLife, 10);
 
 		g.setColor(Color.WHITE);
-		g.setFont(font);
+		g.setFont(lifeFont);
 		g.drawString(Game.player.life + "/" + Game.player.maxLife, 40, 14);
+
+		g.setFont(ammoFont);
+		g.setColor(Color.BLACK);
+		g.drawString("Munição: " + Game.player.ammo, 251, 14);
+		g.setColor(Color.WHITE);
+		g.drawString("Munição: " + Game.player.ammo, 250, 13);
 	}
 }

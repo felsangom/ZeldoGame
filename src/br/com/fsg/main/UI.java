@@ -8,18 +8,27 @@ import java.awt.Graphics2D;
 
 public class UI {
 
+	private String gameName = "Zeldo";
+	private String[] menuItems = { "Novo jogo", "Sair" }; 
+
 	private String pause = "Pausa";
 	private String resume = "Pressione ESC para voltar ao jogo";
 	private String gameOver = "Game Over";
 	private String startOver = "Pressione ENTER para reiniciar";
+
+	private Font gameNameFont = new Font("Verdana", Font.BOLD, 25);
+	private Font menuItemFont = new Font("arial", Font.BOLD, 15);
 	private Font lifeFont = new Font("arial", Font.BOLD, 9);
 	private Font ammoFont = new Font("arial", Font.BOLD, 10);
 	private Font overlayTitleFont = new Font("arial", Font.BOLD, 25);
 	private Font overlaySubtitleFont = new Font("arial", Font.BOLD, 15);
+
 	private Color gameOverBackgroundColor = new Color(0, 0, 0, 100);
 	
 	public void render(Graphics g) {
-		if (Game.STATE == Game.NORMAL_STATE) {
+		if (Game.STATE == Game.MENU_STATE) {
+			renderGameMenu(g);
+		} else if (Game.STATE == Game.NORMAL_STATE) {
 			renderGameUI(g);
 		} else if (Game.STATE == Game.PAUSE_STATE) {
 			renderGameUI(g);
@@ -30,6 +39,19 @@ public class UI {
 		}
 	}
 
+	public void renderGameMenu(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, Game.WINDOW_WIDTH * Game.SCALE, Game.WINDOW_HEIGHT * Game.SCALE);
+
+		g.setFont(gameNameFont);
+		FontMetrics metrics = g.getFontMetrics(gameNameFont);
+		int gameNameWidth = metrics.stringWidth(gameName);
+		g.setColor(Color.WHITE);
+		g.drawString(gameName, (Game.WINDOW_WIDTH / 2) - (gameNameWidth / 2) + 1, 30);
+	}
+	
 	public void renderGameUI(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.drawRect(4, 4, 101, 11);
@@ -57,15 +79,22 @@ public class UI {
 		g2.fillRect(0, 0, Game.WINDOW_WIDTH * Game.SCALE, Game.WINDOW_HEIGHT * Game.SCALE);
 
 		g.setFont(overlayTitleFont);
-		g.setColor(Color.WHITE);
 		FontMetrics metrics = g.getFontMetrics(overlayTitleFont);
 		int pauseWidth = metrics.stringWidth(pause);
 		int pauseHeight = metrics.getHeight();
+
+		g.setColor(Color.BLACK);
+		g.drawString(pause, (Game.WINDOW_WIDTH / 2) - (pauseWidth / 2) + 1, (Game.WINDOW_HEIGHT / 2) - (pauseHeight / 2) + 1);
+		g.setColor(Color.WHITE);
 		g.drawString(pause, (Game.WINDOW_WIDTH / 2) - (pauseWidth / 2), (Game.WINDOW_HEIGHT / 2) - (pauseHeight / 2));
 
 		g.setFont(overlaySubtitleFont);
 		metrics = g.getFontMetrics(overlaySubtitleFont);
 		pauseWidth = metrics.stringWidth(resume);
+
+		g.setColor(Color.BLACK);
+		g.drawString(resume, (Game.WINDOW_WIDTH / 2) - (pauseWidth / 2) + 1, (Game.WINDOW_HEIGHT / 2) + 11);
+		g.setColor(Color.WHITE);
 		g.drawString(resume, (Game.WINDOW_WIDTH / 2) - (pauseWidth / 2), (Game.WINDOW_HEIGHT / 2) + 10);
 	}
 	
@@ -75,15 +104,22 @@ public class UI {
 		g2.fillRect(0, 0, Game.WINDOW_WIDTH * Game.SCALE, Game.WINDOW_HEIGHT * Game.SCALE);
 
 		g.setFont(overlayTitleFont);
-		g.setColor(Color.WHITE);
 		FontMetrics metrics = g.getFontMetrics(overlayTitleFont);
 		int gameOverWidth = metrics.stringWidth(gameOver);
 		int gameOverHeight = metrics.getHeight();
+
+		g.setColor(Color.BLACK);
+		g.drawString(gameOver, (Game.WINDOW_WIDTH / 2) - (gameOverWidth / 2) + 1, (Game.WINDOW_HEIGHT / 2) - (gameOverHeight / 2) + 1);
+		g.setColor(Color.WHITE);
 		g.drawString(gameOver, (Game.WINDOW_WIDTH / 2) - (gameOverWidth / 2), (Game.WINDOW_HEIGHT / 2) - (gameOverHeight / 2));
 
 		g.setFont(overlaySubtitleFont);
 		metrics = g.getFontMetrics(overlaySubtitleFont);
 		gameOverWidth = metrics.stringWidth(startOver);
+		
+		g.setColor(Color.BLACK);
+		g.drawString(startOver, (Game.WINDOW_WIDTH / 2) - (gameOverWidth / 2) + 1, (Game.WINDOW_HEIGHT / 2) + 11);
+		g.setColor(Color.WHITE);
 		g.drawString(startOver, (Game.WINDOW_WIDTH / 2) - (gameOverWidth / 2), (Game.WINDOW_HEIGHT / 2) + 10);
 	}
 }

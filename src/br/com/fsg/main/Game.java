@@ -25,11 +25,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 3475332481195704314L;
 
+	public static int MENU_STATE = 0;
 	public static int NORMAL_STATE = 1;
 	public static int GAME_OVER_STATE = 2;
 	public static int PAUSE_STATE = 3;
 	public static int STATE;
-	
+
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = false;
@@ -67,7 +68,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	}
 
 	public static void initGame(int level) {
-		STATE = NORMAL_STATE;
+		STATE = MENU_STATE;
 
 		entities = new ArrayList<Entity>();
 		arrowsShot = new ArrayList<ArrowShot>();
@@ -234,8 +235,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			currentLevel = 1;
-			initGame(currentLevel);
+			if (STATE == GAME_OVER_STATE) {
+				currentLevel = 1;
+				initGame(currentLevel);
+			}
 		}
 	}
 

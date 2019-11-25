@@ -31,6 +31,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static int PAUSE_STATE = 3;
 	public static int STATE;
 
+	public static int NEW_GAME = 0;
+	public static int QUIT_GAME = 1;
+
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = false;
@@ -64,12 +67,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		addKeyListener(this);
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH * SCALE, WINDOW_HEIGHT * SCALE));
 		initFrame();
+
+		STATE = MENU_STATE;
 		initGame(currentLevel);
 	}
 
 	public static void initGame(int level) {
-		STATE = MENU_STATE;
-
 		entities = new ArrayList<Entity>();
 		arrowsShot = new ArrayList<ArrowShot>();
 		entitiesToRemove = new ArrayList<Entity>();
@@ -226,6 +229,22 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			}
 		}
 
+		if (STATE == MENU_STATE) {
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				UI.currentSelection -= 1;
+				if (UI.currentSelection < 0) {
+					UI.currentSelection = UI.menuItems.length - 1;
+				}
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {;
+				UI.currentSelection += 1;
+				if (UI.currentSelection > UI.menuItems.length - 1) {
+					UI.currentSelection = 0;
+				}
+			}
+		}
+		
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			if (STATE == PAUSE_STATE) {
 				STATE = NORMAL_STATE;
@@ -235,7 +254,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (STATE == GAME_OVER_STATE) {
+			if (STATE == MENU_STATE) {
+				if (UI.currentSelection == NEW_GAME) {
+					STATE = NORMAL_STATE;
+					currentLevel = 1;
+					initGame(currentLevel);
+				} else if (UI.currentSelection == QUIT_GAME) {
+					System.exit(1);
+				}
+			} else if (STATE == GAME_OVER_STATE) {
+				STATE = NORMAL_STATE;
 				currentLevel = 1;
 				initGame(currentLevel);
 			}

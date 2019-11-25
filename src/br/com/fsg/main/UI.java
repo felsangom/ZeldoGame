@@ -9,7 +9,9 @@ import java.awt.Graphics2D;
 public class UI {
 
 	private String gameName = "Zeldo";
-	private String[] menuItems = { "Novo jogo", "Sair" }; 
+
+	public static String[] menuItems = { "Novo jogo", "Sair" };
+	public static int currentSelection = Game.NEW_GAME;
 
 	private String pause = "Pausa";
 	private String resume = "Pressione ESC para voltar ao jogo";
@@ -40,16 +42,37 @@ public class UI {
 	}
 
 	public void renderGameMenu(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Game.WINDOW_WIDTH * Game.SCALE, Game.WINDOW_HEIGHT * Game.SCALE);
 
 		g.setFont(gameNameFont);
 		FontMetrics metrics = g.getFontMetrics(gameNameFont);
 		int gameNameWidth = metrics.stringWidth(gameName);
+		g.setColor(Color.MAGENTA);
+		g.drawString(gameName, (Game.WINDOW_WIDTH / 2) - (gameNameWidth / 2) + 1, 31);
 		g.setColor(Color.WHITE);
-		g.drawString(gameName, (Game.WINDOW_WIDTH / 2) - (gameNameWidth / 2) + 1, 30);
+		g.drawString(gameName, (Game.WINDOW_WIDTH / 2) - (gameNameWidth / 2), 30);
+
+
+		int menuItemStartPosition = 100;
+		g.setFont(menuItemFont);
+
+		for (int index = 0; index < menuItems.length; index++) {
+			String menuItem = menuItems[index];
+			metrics = g.getFontMetrics(menuItemFont);
+			int menuItemWidth = metrics.stringWidth(menuItem);
+			int xPosition = (Game.WINDOW_WIDTH / 2) - (menuItemWidth / 2);
+
+			g.setColor(Color.WHITE);
+			g.drawString(menuItem, xPosition, menuItemStartPosition);
+
+			if (currentSelection == index) {
+				g.setColor(Color.RED);
+				g.drawRect(xPosition - 5, menuItemStartPosition - 15, menuItemWidth + 10, 20);
+			}
+
+			menuItemStartPosition += 25;
+		}
 	}
 	
 	public void renderGameUI(Graphics g) {

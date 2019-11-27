@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
+import br.com.fsg.main.Sound;
 import br.com.fsg.world.Camera;
 import br.com.fsg.world.Tile;
 import br.com.fsg.world.World;
@@ -100,8 +101,8 @@ public class Player extends Entity {
 			}
 				
 
+			Sound.arrow.play();
 			Game.arrowsShot.add(new ArrowShot(arrowX, arrowY, arrowSprite));
-
 			ammo--;
 		}
 	}
@@ -194,14 +195,17 @@ public class Player extends Entity {
 							Game.player.life = Game.player.maxLife;
 						}
 
+						Sound.potion.play();
 						Game.entitiesToRemove.add(entity);
 					}
 
 				} else if (entity instanceof Ammo) {
+					Sound.arrow.play();
 					ammo += 2;
 					entity.collectedTime = System.currentTimeMillis();
 					entity.visible = false;
 				} else if (entity instanceof Weapon) {
+					Sound.arrow.play();
 					hasWeapon = true;
 					Game.entitiesToRemove.add(entity);
 				}

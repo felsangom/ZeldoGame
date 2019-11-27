@@ -3,6 +3,7 @@ package br.com.fsg.entidades;
 import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
+import br.com.fsg.main.Sound;
 import br.com.fsg.world.World;
 
 public class ArrowShot extends Entity {
@@ -45,6 +46,7 @@ public class ArrowShot extends Entity {
 			if (entity instanceof Enemy) {
 				Enemy enemy = (Enemy) entity;
 				if (this.collidingWith(enemy) && enemy.life > 0) {
+					Sound.arrowDamage.play();
 					enemy.life -= 50;
 					enemy.tookDamage = true;
 					Game.entitiesToRemove.add(this);

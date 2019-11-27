@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import br.com.fsg.main.Game;
+import br.com.fsg.main.Sound;
 import br.com.fsg.world.Camera;
 import br.com.fsg.world.Tile;
 import br.com.fsg.world.World;
@@ -98,8 +99,13 @@ public class Enemy extends Entity {
 							Game.player.life -= damage;
 							if (Game.player.life < 0)
 								Game.player.life = 0;
+								if (damage > 10) {
+									Sound.strongPunch.play();
+								} else {
+									Sound.punch.play();
+								}
 						} else {
-							// Errou o ataque
+							Sound.missed.play();
 						}
 					}
 				}

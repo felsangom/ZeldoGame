@@ -73,6 +73,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	}
 
 	public static void initGame(int level) {
+		if (STATE == MENU_STATE) {
+			Sound.backgroundMusic.stop();
+			Sound.menuMusic.loop();
+		} else if (STATE == NORMAL_STATE) {
+			Sound.menuMusic.stop();
+			Sound.backgroundMusic.loop();
+		}
+
 		entities = new ArrayList<Entity>();
 		arrowsShot = new ArrayList<ArrowShot>();
 		entitiesToRemove = new ArrayList<Entity>();

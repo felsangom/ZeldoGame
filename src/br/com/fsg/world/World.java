@@ -36,6 +36,8 @@ public class World {
 			
 			tiles = new Tile[pixels.length];
 
+			Game.enemiesLeft = 0;
+			
 			int x, y = 0;
 			int maxX = (int) Math.sqrt(pixels.length);
 

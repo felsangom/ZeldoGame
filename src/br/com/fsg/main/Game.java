@@ -8,7 +8,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -119,6 +123,32 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 	}
 
+	public static void save(HashMap<String, Integer> currentGame, int encode) {
+		try {
+			BufferedWriter gameSaver = new BufferedWriter(new FileWriter("game.save"));
+
+			currentGame.forEach((chave, valor) -> {
+				try {
+					String currentPair = chave + ":"; 
+					char[] encodedValue = Integer.toString(valor).toCharArray();
+					for (int indice = 0; indice < encodedValue.length; indice++) {
+						currentPair += encodedValue[indice] += encode;
+					}
+
+					gameSaver.write(currentPair);
+				} catch (IOException e) {}
+			});
+
+			gameSaver.flush();
+			gameSaver.close();
+		} catch(IOException e) {}
+	}
+
+	public static HashMap<String, Integer> load(int encode) {
+		HashMap<String, Integer> loadedGame = new HashMap<String, Integer>();
+		return loadedGame;
+	}
+
 	public void tick() {
 		if (STATE == NORMAL_STATE) {
 			for (Entity entidade : entities) {
@@ -215,45 +245,54 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode(); 
 		if (STATE == NORMAL_STATE) {
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D) {
 				player.right = true;
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A) {
 				player.left = true;
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 				player.up = true;
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {;
+			if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {;
 				player.down = true;
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_X) {
+			if (keyCode == KeyEvent.VK_X) {
 				player.shoot();
 			}
 		}
 
 		if (STATE == MENU_STATE) {
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (keyCode == KeyEvent.VK_UP) {
 				UI.currentSelection -= 1;
 				if (UI.currentSelection < 0) {
 					UI.currentSelection = UI.menuItems.length - 1;
 				}
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {;
+			if (keyCode == KeyEvent.VK_DOWN) {;
 				UI.currentSelection += 1;
 				if (UI.currentSelection > UI.menuItems.length - 1) {
 					UI.currentSelection = 0;
 				}
 			}
 		}
+
+		if (keyCode == KeyEvent.VK_Q) {
+			if (STATE == PAUSE_STATE) {
+				STATE = MENU_STATE;
+			} else if (STATE == GAME_OVER_STATE) {
+				STATE = MENU_STATE;
+			}
+		}
 		
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+		if (keyCode == KeyEvent.VK_ESCAPE) {
 			if (STATE == PAUSE_STATE) {
 				STATE = NORMAL_STATE;
 			} else if (STATE == NORMAL_STATE) {
@@ -261,7 +300,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			}
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+		if (keyCode == KeyEvent.VK_ENTER) {
 			if (STATE == MENU_STATE) {
 				if (UI.currentSelection == NEW_GAME) {
 					STATE = NORMAL_STATE;
@@ -280,46 +319,50 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+		int keyCode = e.getKeyCode();
+
+		if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D) {
 			player.right = false;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+		if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A) {
 			player.left = false;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+		if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 			player.up = false;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {;
+		if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {;
 			player.down = false;
 		}
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+		int keyCode = e.getKeyCode();
+
+		if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D) {
 			player.right = true;
 			player.left = false;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+		if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A) {
 			player.right = false;
 			player.left = true;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+		if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 			player.up = true;
 			player.down = false;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+		if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {
 			player.up = false;
 			player.down = true;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_X) {
+		if (keyCode == KeyEvent.VK_X) {
 			player.shoot();
 		}
 	}

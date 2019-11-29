@@ -15,6 +15,7 @@ public class UI {
 
 	private String pause = "Pausa";
 	private String resume = "Pressione ESC para voltar ao jogo";
+	private String quit = "Pressione Q para voltar ao menu";
 	private String gameOver = "Game Over";
 	private String startOver = "Pressione ENTER para reiniciar";
 
@@ -119,6 +120,13 @@ public class UI {
 		g.drawString(resume, (Game.WINDOW_WIDTH / 2) - (pauseWidth / 2) + 1, (Game.WINDOW_HEIGHT / 2) + 11);
 		g.setColor(Color.WHITE);
 		g.drawString(resume, (Game.WINDOW_WIDTH / 2) - (pauseWidth / 2), (Game.WINDOW_HEIGHT / 2) + 10);
+
+		int quitWidth = metrics.stringWidth(quit);
+
+		g.setColor(Color.BLACK);
+		g.drawString(quit, (Game.WINDOW_WIDTH / 2) - (quitWidth / 2) + 1, (Game.WINDOW_HEIGHT / 2) + 31);
+		g.setColor(Color.WHITE);
+		g.drawString(quit, (Game.WINDOW_WIDTH / 2) - (quitWidth / 2), (Game.WINDOW_HEIGHT / 2) + 30);
 	}
 	
 	public void renderGameOver(Graphics g) {
@@ -144,5 +152,12 @@ public class UI {
 		g.drawString(startOver, (Game.WINDOW_WIDTH / 2) - (gameOverWidth / 2) + 1, (Game.WINDOW_HEIGHT / 2) + 11);
 		g.setColor(Color.WHITE);
 		g.drawString(startOver, (Game.WINDOW_WIDTH / 2) - (gameOverWidth / 2), (Game.WINDOW_HEIGHT / 2) + 10);
+
+		int quitWidth = metrics.stringWidth(quit);
+
+		g.setColor(Color.BLACK);
+		g.drawString(quit, (Game.WINDOW_WIDTH / 2) - (quitWidth / 2) + 1, (Game.WINDOW_HEIGHT / 2) + 31);
+		g.setColor(Color.WHITE);
+		g.drawString(quit, (Game.WINDOW_WIDTH / 2) - (quitWidth / 2), (Game.WINDOW_HEIGHT / 2) + 30);
 	}
 }

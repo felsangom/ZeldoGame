@@ -8,11 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -121,32 +117,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void save(HashMap<String, Integer> currentGame, int encode) {
-		try {
-			BufferedWriter gameSaver = new BufferedWriter(new FileWriter("game.save"));
-
-			currentGame.forEach((chave, valor) -> {
-				try {
-					String currentPair = chave + ":"; 
-					char[] encodedValue = Integer.toString(valor).toCharArray();
-					for (int indice = 0; indice < encodedValue.length; indice++) {
-						currentPair += encodedValue[indice] += encode;
-					}
-
-					gameSaver.write(currentPair);
-				} catch (IOException e) {}
-			});
-
-			gameSaver.flush();
-			gameSaver.close();
-		} catch(IOException e) {}
-	}
-
-	public static HashMap<String, Integer> load(int encode) {
-		HashMap<String, Integer> loadedGame = new HashMap<String, Integer>();
-		return loadedGame;
 	}
 
 	public void tick() {

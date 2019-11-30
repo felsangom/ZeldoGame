@@ -2,9 +2,11 @@ package br.com.fsg.main;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.IOException;
 
 public class UI {
 
@@ -19,7 +21,6 @@ public class UI {
 	private String gameOver = "Game Over";
 	private String startOver = "Pressione ENTER para reiniciar";
 
-	private Font gameNameFont = new Font("Verdana", Font.BOLD, 25);
 	private Font menuItemFont = new Font("arial", Font.BOLD, 15);
 	private Font lifeFont = new Font("arial", Font.BOLD, 9);
 	private Font ammoFont = new Font("arial", Font.BOLD, 10);
@@ -27,8 +28,21 @@ public class UI {
 	private Font overlaySubtitleFont = new Font("arial", Font.BOLD, 15);
 
 	private Color gameOverBackgroundColor = new Color(0, 0, 0, 100);
-	
+
+	private Font gameNameFont;
+
 	public void render(Graphics g) {
+		if (gameNameFont == null) {
+			try {
+				gameNameFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/zelda.otf"));
+				gameNameFont = gameNameFont.deriveFont(Font.BOLD, 50);
+			} catch (FontFormatException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		if (Game.STATE == Game.MENU_STATE) {
 			renderGameMenu(g);
 		} else if (Game.STATE == Game.NORMAL_STATE) {
@@ -50,9 +64,9 @@ public class UI {
 		FontMetrics metrics = g.getFontMetrics(gameNameFont);
 		int gameNameWidth = metrics.stringWidth(gameName);
 		g.setColor(Color.MAGENTA);
-		g.drawString(gameName, (Game.WINDOW_WIDTH / 2) - (gameNameWidth / 2) + 1, 31);
+		g.drawString(gameName, (Game.WINDOW_WIDTH / 2) - (gameNameWidth / 2) + 1, 51);
 		g.setColor(Color.WHITE);
-		g.drawString(gameName, (Game.WINDOW_WIDTH / 2) - (gameNameWidth / 2), 30);
+		g.drawString(gameName, (Game.WINDOW_WIDTH / 2) - (gameNameWidth / 2), 50);
 
 
 		int menuItemStartPosition = 100;

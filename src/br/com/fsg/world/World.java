@@ -106,7 +106,7 @@ public class World {
 
 			if (x >= startX && x <= endX && y >= startY && y <= endY) {
 				Tile tile = tiles[indice];
-				tile.render(g);				
+				tile.render(g);
 			}
 		}
 	}

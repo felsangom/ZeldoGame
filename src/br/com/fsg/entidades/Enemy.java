@@ -45,8 +45,8 @@ public class Enemy extends Entity {
 	public boolean left, up, right, down;
 	public boolean tookDamage = false;
 	private int blinkingFrames = 0;
-	private double minSpeed = 0.1;
-	private double maxSpeed = 0.4;
+	private double minSpeed = 1;
+	private double maxSpeed = 2;
 	private double speed;
 	public int maxLife = 100;
 	public int life = maxLife;
@@ -113,55 +113,62 @@ public class Enemy extends Entity {
 				return;
 			}
 
-			if (Game.random.nextInt(10) < 3) {
-				if ((int) x < Game.player.x && World.isFree((int) (x + speed), (int) y)) {
-					x += speed;
-					right = true;
-					left = false;
-				} else if ((int) x > Game.player.x && World.isFree((int) (x - speed), (int) y)) {
-					x -= speed;
-					right = false;
-					left = true;
-				}
-
-				if ((int) y < Game.player.y && World.isFree((int) x, (int) (y + speed))) {
-					y += speed;
-					up = false;
-					down = true;
-				} else if ((int) y > Game.player.y && World.isFree((int) x, (int) (y - speed))) {
-					y -= speed;
-					up = true;
-					down = false;
-				}
-
-				if (right || left || up || down) {
-					frames++;
-					if (frames == maxFrames) {
-						frames = 0;
-
-						if (spriteIndex == maxSpriteIndex) {
-							increasingAnimation = false;
-						} else if (spriteIndex == 0) {
-							increasingAnimation = true;
-						}
-
-						if (increasingAnimation) {
-							spriteIndex++;
-						} else {
-							spriteIndex--;
+			if (this.distanceTo(Game.player) < 125) {
+				if (Game.random.nextInt(10) < 3) {
+					if ((int) x < Game.player.x && World.isFree((int) (x + speed), (int) y)) {
+						x += speed;
+						right = true;
+						left = false;
+					} else if ((int) x > Game.player.x && World.isFree((int) (x - speed), (int) y)) {
+						x -= speed;
+						right = false;
+						left = true;
+					}
+	
+					if ((int) y < Game.player.y && World.isFree((int) x, (int) (y + speed))) {
+						y += speed;
+						up = false;
+						down = true;
+					} else if ((int) y > Game.player.y && World.isFree((int) x, (int) (y - speed))) {
+						y -= speed;
+						up = true;
+						down = false;
+					}
+	
+					if (right || left || up || down) {
+						frames++;
+						if (frames == maxFrames) {
+							frames = 0;
+	
+							if (spriteIndex == maxSpriteIndex) {
+								increasingAnimation = false;
+							} else if (spriteIndex == 0) {
+								increasingAnimation = true;
+							}
+	
+							if (increasingAnimation) {
+								spriteIndex++;
+							} else {
+								spriteIndex--;
+							}
 						}
 					}
+	
+					if ((int) x == Game.player.x) {
+						left = false;
+						right = false;
+					}
+	
+					if ((int) y == Game.player.y) {
+						up = false;
+						down = false;
+					}
 				}
-
-				if ((int) x == Game.player.x) {
-					left = false;
-					right = false;
-				}
-
-				if ((int) y == Game.player.y) {
-					up = false;
-					down = false;
-				}
+			} else {
+				down = true;
+				frames = 0;
+				spriteIndex = 0;
+				increasingAnimation = true;
 			}
 
 			if (tookDamage) {
